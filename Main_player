@@ -20,6 +20,20 @@ local_log_dict = {
 
 }
 winner = 'undefined'
+
+player_choice = input("Player X starts the game. Enter X or O to indicate which player you want to be: ")
+if player_choice not in ('X','O','x','o'):
+    print("You did not enter a valid player choice. Please run the game again, and enter a valid player choice")
+    exit()
+else:
+    player_choice = player_choice.upper()
+    if player_choice == 'X':
+        leftover = 1
+        AI_player = "O"
+    else:
+        leftover = 0
+        AI_player = "X"
+
 while playing: #explain here
     move_number += 1
     draw_board(spots)
@@ -30,15 +44,16 @@ while playing: #explain here
         print("That spot is taken, pick an open spot")
     last_turn = turn
 
-    if move_number % 2 == 1: #AI's turn
+    if move_number % 2 == leftover: # Human player turn
+        choice = input("[You] player " + player_choice + " which spot do you choose? ")
+
+    else: #AI turn
         x = load_board_states()
         random_play = random.choice(x[str(spots)]["options"])
         local_log_dict[str(spots)] = random_play
         choice = str(random_play)
-        print("The AI player X chose spot " + str(choice))
+        print("The AI player " + AI_player + " chose spot " + str(choice))
 
-    else:
-        choice = input("[You] player O, which spot do you choose? ")
 
     if choice == 'Q':
         playing = False
@@ -61,12 +76,12 @@ draw_board(spots)
 
 if complete == True:
     if check_turn(turn) == "X":
-        print("Player 1 Wins!")
+        print("Player X Wins!")
         winner = 'X'
 
 
     else:
-        print("Player 2 Wins!")
+        print("Player O Wins!")
         winner = 'O'
 
 else:
